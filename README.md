@@ -33,13 +33,15 @@ Una vez tengamos la compilación podemos ejecutar lo siguiente:
   
 ## Configuración NGINX 
 
-1-  node build/index.js 
-    node build/index.js -p 8081 -m cluster
+- 1  
+  - node build/index.js 
+  - node build/index.js -p 8081 -m cluster
    
-2 (varios puertos) -  node main.js
-    node build/ndex.js -p 8081 -m cluster
-    pm2 start build/ndex.js --name server8082 --watch -- 8082
-    pm2 start build/ndex.js --name server8083 --watch -- 8083   
-    pm2 start build/ndex.js --name server8084 --watch -- 8084  
-    pm2 start build/ndex.js --name server8085 --watch -- 8085 
-    pm2 start build/ndex.js --name servercluster --watch -i 0 
+- 2 (varios puertos)
+  - node main.js
+  - node build/ndex.js -p 8081 -m cluster
+  - pm2 start build/ndex.js --name server8082 --watch -- 8082
+  - pm2 start build/ndex.js --name server8083 --watch -- 8083   
+  - pm2 start build/ndex.js --name server8084 --watch -- 8084  
+  - pm2 start build/ndex.js --name server8085 --watch -- 8085 
+  - pm2 start build/ndex.js --name servercluster --watch -i 0 
