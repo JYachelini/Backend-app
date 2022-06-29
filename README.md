@@ -22,16 +22,17 @@ Esto nos compilara el TypeScript en una carpeta "build".
 
 Una vez tengamos la compilación podemos ejecutar lo siguiente:
 - Forever
-  forever start build/index.js -p 8081
-  forever start build/index.js -p 8081 -m cluster
+  - forever start build/index.js -p 8081
+  - forever start build/index.js -p 8081 -m cluster
   
 - PM2
-  pm2 start build/index.js --name --watch -- -p 8081
-  pm2 start build/index.js --name --watch -- -p 8081 -m cluster
-  pm2 start build/index.js --name --watch -i 0 -- -m cluster
+  - pm2 start build/index.js --name --watch -- -p 8081
+  - pm2 start build/index.js --name --watch -- -p 8081 -m cluster
+  - pm2 start build/index.js --name --watch -i 0 -- -m cluster
   
   
-Configuración NGINX 
+## Configuración NGINX 
+
 1-  node build/index.js 
     node build/index.js -p 8081 -m cluster
    
