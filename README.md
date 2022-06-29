@@ -4,6 +4,7 @@ Aplicación creada con React, Typescript, Express, Node, Passport, MongoDB.
 ## Variables de entorno necesarias
 - PART1STRING:USER:PASSWORD:PART2STRING:DB:PART3STRING === URL para conectarse a mongo
 - FRONTEND === URL del FrontEnd
+- NODE_ENV para especificar el entorno de desarrollo, PROD || vacio
 
 ## Argumentos
 -p, --port especifica el puerto que va a ser usado para hostear el servidor, por default es 8080. Para especificar este argumento recomiendo modificar el script "start" en package.json
