@@ -1,4 +1,4 @@
-import { config } from "src/config"
+import { config } from "../config"
 import { logger } from "./logs"
 
 process.on('exit', () => {

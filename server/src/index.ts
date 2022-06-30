@@ -1,5 +1,5 @@
 // Express || Server variables
-import express from 'express'
+import express, { Request, Response } from 'express'
 import http from 'http'
 import { Server as ioServer } from 'socket.io'
 
@@ -71,6 +71,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(express.static(root))
 app.use(logRoute)
+// app.use(logProductsError)
 
 // Passport
 passport.use(
@@ -123,26 +124,37 @@ app.use(routerProduct)
 app.use(routerRandom)
 
 // Desafios
-const info = {
-	Arguments: config.arguments,
-	OS: config.os,
-	NodeVersion: config.NodeVersion,
-	MemoryReservedRSS: config.MemoryReservedRSS,
-	ExecPath: config.ExecPath,
-	ProcessID: config.ProcessID,
-	Folder: config.Folder,
-}
+
 app.get('/info', (req, res) => {
+	const info = {
+		Arguments: config.arguments,
+		OS: config.os,
+		NodeVersion: config.NodeVersion,
+		MemoryReservedRSS: config.MemoryReservedRSS,
+		ExecPath: config.ExecPath,
+		ProcessID: config.ProcessID,
+		Folder: config.Folder,
+	}
 	res.send(info)
 })
 
 app.get('/infoCompressed', compression(), (req, res) => {
+	const info = {
+		Arguments: config.arguments,
+		OS: config.os,
+		NodeVersion: config.NodeVersion,
+		MemoryReservedRSS: config.MemoryReservedRSS,
+		ExecPath: config.ExecPath,
+		ProcessID: config.ProcessID,
+		Folder: config.Folder,
+	}
 	res.send(info)
 })
 
 app.get('/*', logInvalid, (req, res) => {
 	res.redirect('/')
 })
+
 
 // Socket io
 const httpserver = http.createServer(app)
@@ -174,7 +186,6 @@ io.on('connection', (socket) => {
 
 const PORT = config.PORT
 const MODE: mode = config.MODE
-
 
 // Server listener
 const server = new Server()

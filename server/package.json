@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "nodemon": "nodemon --exec ts-node src/index.ts -p 8080 -m cluster",
-    "node": "npx ts-node src/index.ts -p 8080 -m cluster"
+    "nodemon": "nodemon --exec ts-node src/index.ts -p 8080 -m fork",
+    "node": "npx ts-node src/index.ts -p 8080 -m fork"
   },
   "keywords": [],
   "author": "",

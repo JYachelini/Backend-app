@@ -7,10 +7,9 @@ export const logRoute = (req: Request, res: Response, next: NextFunction) => {
 	next()
 }
 
-export const logProductsError = (err: Error, req: Request, res: Response, next: NextFunction) => {
-	logger?.info(`Error with Api Products: ${err.message}`)
-	res.status(500).send(`Error with Api Products: ${err.message}`)
-    next()
+export const logProductsError = (err: Error,req: Request, res: Response, next: NextFunction) => {
+	logger?.error(`Error with Api Products: ${err}`)
+	res.status(500).send(`Error with Api Products: ${err}`)
 }
 
 export const logInvalid = (req: Request, res: Response, next: NextFunction) => {
