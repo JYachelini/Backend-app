@@ -1,4 +1,4 @@
-import { config } from "../config"
+import { env } from "../config/env"
 import { logger } from "./logs"
 
 process.on('exit', () => {
@@ -8,5 +8,5 @@ process.on('exit', () => {
 process.send!('start')
 
 process.on('message', (PORT) => {
-	logger?.info(`Worker ${config.ProcessID} start on port ${PORT} (Fork)`)
+	logger?.info(`Worker ${env.ProcessID} start on port ${PORT} (Fork)`)
 })

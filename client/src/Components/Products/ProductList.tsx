@@ -6,7 +6,7 @@ import Product from './Product'
 export default function ProductList() {
 	const [products, setProducts] = useState<ProductInterface[]>()
 	useEffect(() => {
-		axios.get('http://localhost:8080/api/productos', { withCredentials: true }).then((res: AxiosResponse) => {
+		axios.get('/api/productos', { withCredentials: true }).then((res: AxiosResponse) => {
 			const filteredProducts: ProductInterface[] = []
 			res.data.forEach((product: ProductInterface) => {
 				const productInformation = {

@@ -1,6 +1,5 @@
 import { Request, Response, Router } from 'express'
 import { fork } from 'child_process'
-import { logProductsError } from '../Middlewares/Logs'
 
 export const routerRandom = Router()
 
@@ -18,4 +17,3 @@ const error = (req: Request, res: Response) => {
 	throw new Error('Error random')
 }
 routerRandom.get('/api/randoms-error', error)
-routerRandom.use(logProductsError)

@@ -17,7 +17,7 @@ export default function Chat() {
 
 	const getMessages = () => {
 		try {
-			axios.get('http://localhost:8080/chat', { withCredentials: true }).then((res) => {
+			axios.get('/chat', { withCredentials: true }).then((res) => {
 				if (res.data === 'Empty chat') {
 					setSystemMessage(res.data)
 				} else {

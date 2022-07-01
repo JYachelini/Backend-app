@@ -6,7 +6,7 @@ import { myContext } from '../Pages/Context'
 export default function NavBar() {
 	const ctx = useContext(myContext)
 	const logout = () => {
-		axios.get('http://localhost:8080/logout', { withCredentials: true }).then((res: AxiosResponse) => {
+		axios.get('/logout', { withCredentials: true }).then((res: AxiosResponse) => {
 			if (res.data === 'success') {
 				window.location.href = '/'
 			}

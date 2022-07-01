@@ -1,5 +1,4 @@
 import { Router } from 'express'
-import { logProductsError } from '../Middlewares/Logs'
 import Products from '../Controllers/products'
 import { ProductInterface } from '../Interfaces/CartInterface'
 import { isAdministrator } from '../Middlewares/isAdministrator'
@@ -7,7 +6,6 @@ import { isAdministrator } from '../Middlewares/isAdministrator'
 const products = new Products()
 export const routerProduct = Router()
 
-routerProduct.use(logProductsError)
 routerProduct.route('/api/productos/:id?')
 	.get(async (req, res) => {
 		let id: number

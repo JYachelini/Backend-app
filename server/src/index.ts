@@ -3,17 +3,14 @@ import express, { Request, Response } from 'express'
 import http from 'http'
 import { Server as ioServer } from 'socket.io'
 
-// MongoDB
-import mongoose from 'mongoose'
+// Model
 import User from './Models/UserModel'
 
 // Encrypt
 import bcrypt from 'bcryptjs'
 
 // Env
-import dotenv from 'dotenv'
-import { config } from './config'
-dotenv.config()
+import { env } from './config/env'
 
 // Interfaces & Types
 import { DatabaseUserInterface, UserInterface } from './Interfaces/UserInterface'
@@ -46,14 +43,9 @@ import compression from 'compression'
 // Strategy
 const LocalStrategy = passportLocal.Strategy
 
-// Logs
-import { logger } from './server/logs'
-
 // Connection to Mongo
-mongoose.connect(`${config.mongoDB}`, (err) => {
-	if (err) throw err
-	logger?.info(`Worker ${config.ProcessID} connected to Mongo`)
-})
+import { connectToMongo } from './config/connectMongo'
+connectToMongo()
 
 // Path server folder
 import path from 'path'
@@ -64,14 +56,13 @@ const root = path.join(__dirname, '..', '..', 'client/build')
 // Middleware
 const app = express()
 app.use(express.json())
-app.use(cors({ origin: `${config.FRONTEND}`, credentials: true }))
+app.use(cors({ origin: `${env.FRONTEND}`, credentials: true }))
 app.use(session({ secret: 'secretcode', resave: true, saveUninitialized: true }))
 app.use(cookieParser())
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(express.static(root))
 app.use(logRoute)
-// app.use(logProductsError)
 
 // Passport
 passport.use(
@@ -122,31 +113,33 @@ app.use(routerCart)
 app.use(routerChat)
 app.use(routerProduct)
 app.use(routerRandom)
+app.use(logProductsError)
+
 
 // Desafios
 
 app.get('/info', (req, res) => {
 	const info = {
-		Arguments: config.arguments,
-		OS: config.os,
-		NodeVersion: config.NodeVersion,
-		MemoryReservedRSS: config.MemoryReservedRSS,
-		ExecPath: config.ExecPath,
-		ProcessID: config.ProcessID,
-		Folder: config.Folder,
+		Arguments: env.arguments,
+		OS: env.os,
+		NodeVersion: env.NodeVersion,
+		MemoryReservedRSS: env.MemoryReservedRSS,
+		ExecPath: env.ExecPath,
+		ProcessID: env.ProcessID,
+		Folder: env.Folder,
 	}
 	res.send(info)
 })
 
 app.get('/infoCompressed', compression(), (req, res) => {
 	const info = {
-		Arguments: config.arguments,
-		OS: config.os,
-		NodeVersion: config.NodeVersion,
-		MemoryReservedRSS: config.MemoryReservedRSS,
-		ExecPath: config.ExecPath,
-		ProcessID: config.ProcessID,
-		Folder: config.Folder,
+		Arguments: env.arguments,
+		OS: env.os,
+		NodeVersion: env.NodeVersion,
+		MemoryReservedRSS: env.MemoryReservedRSS,
+		ExecPath: env.ExecPath,
+		ProcessID: env.ProcessID,
+		Folder: env.Folder,
 	}
 	res.send(info)
 })
@@ -154,7 +147,6 @@ app.get('/infoCompressed', compression(), (req, res) => {
 app.get('/*', logInvalid, (req, res) => {
 	res.redirect('/')
 })
-
 
 // Socket io
 const httpserver = http.createServer(app)
@@ -184,8 +176,8 @@ io.on('connection', (socket) => {
 	})
 })
 
-const PORT = config.PORT
-const MODE: mode = config.MODE
+const PORT: number = env.PORT
+const MODE: mode = env.MODE
 
 // Server listener
 const server = new Server()

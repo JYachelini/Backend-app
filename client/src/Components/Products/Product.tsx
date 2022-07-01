@@ -27,7 +27,7 @@ export default function Product({ product }: any) {
 		try {
 			axios
 				.put(
-					'http://localhost:8080/api/productos/',
+					'/api/productos/',
 					{
 						nombre: nombre,
 						descripcion: descripcion,
@@ -46,7 +46,7 @@ export default function Product({ product }: any) {
 	const handleDelete = async (e: any) => {
 		e.preventDefault()
 		try {
-			let res = await fetch('http://localhost:8080/api/productos/', {
+			let res = await fetch('/api/productos/', {
 				method: 'DELETE',
 				headers: {
 					'Content-type': 'application/json',

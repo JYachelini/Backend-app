@@ -9,7 +9,7 @@ export default function AdminPage() {
 	const [selectedUser, setSelectedUser] = useState<string>()
 	useEffect(() => {
 		axios
-			.get('http://localhost:8080/getallusers', {
+			.get('/getallusers', {
 				withCredentials: true,
 			})
 			.then((res: AxiosResponse) => {

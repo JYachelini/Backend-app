@@ -9,7 +9,7 @@ const argv: any = yargs.options({
 	m: { type: 'string', alias: 'mode', default: 'fork' },
 }).argv
 
-export const config = {
+export const env = {
     PORT: argv.p,
     MODE: argv.m,
     NODE_ENV: process.env.NODE_ENV,

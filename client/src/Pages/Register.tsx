@@ -8,7 +8,7 @@ export default function Register() {
 	const register = () => {
 		axios
 			.post(
-				'http://localhost:8080/register',
+				'/register',
 				{
 					username,
 					password,

@@ -1,5 +1,5 @@
 import { createLogger, transports, format, addColors, Logger } from 'winston'
-import { config } from '../config'
+import { env } from '../config/env'
 import path from 'path'
 
 const pathLogs = path.join(__dirname, '..', '..', 'Logs')
@@ -61,7 +61,7 @@ const buildDevLogs = () => {
 
 export let logger: logs = null
 
-if (config.NODE_ENV === 'PROD') {
+if (env.NODE_ENV === 'PROD') {
 	logger = buildProdLogs()
 } else {
 	logger = buildDevLogs()

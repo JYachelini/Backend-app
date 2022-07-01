@@ -2,7 +2,7 @@ import child from 'child_process'
 import cluster from 'cluster'
 import { cpus } from 'os'
 import path from 'path'
-import { config } from '../config'
+import { env } from '../config/env'
 import { logger } from './logs'
 const root = path.join(__dirname)
 
@@ -33,7 +33,7 @@ export default class Server {
 
 		if (cluster.isPrimary) {
 			logger?.info(`Workers availables: ${numCPUs}`)
-			logger?.info(`Worker Master ${config.ProcessID} initialized`)
+			logger?.info(`Worker Master ${env.ProcessID} initialized`)
 
 			for (let i = 0; i < numCPUs; i++) {
 				cluster.fork()
@@ -43,7 +43,7 @@ export default class Server {
 				cluster.fork()
 			})
 		} else {
-			logger?.info(`Worker ${config.ProcessID} start on port ${PORT} (Cluster)`)
+			logger?.info(`Worker ${env.ProcessID} start on port ${PORT} (Cluster)`)
 			server
 				.listen(PORT, () => {
 					logger?.info(`Listening from ${server.address().port} - http://localhost:${PORT}`)
