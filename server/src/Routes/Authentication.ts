@@ -5,10 +5,10 @@ import { DatabaseUserInterface, UserInterface } from '../Interfaces/UserInterfac
 import bcrypt from 'bcryptjs'
 import { isAdministrator } from '../Middlewares/isAdministrator'
 
-export const authentication = Router()
+export const routerAuthentication = Router()
 
 
-authentication.route('/register').post(async (req, res) => {
+routerAuthentication.route('/register').post(async (req, res) => {
 	const { username, password } = req?.body
 	if (!username || !password || typeof username !== 'string' || typeof password !== 'string') {
 		res.status(400).send('invalid username or password')
@@ -32,22 +32,22 @@ authentication.route('/register').post(async (req, res) => {
 		})
 })
 
-authentication.route('/login').post(passport.authenticate('local'), (req, res) => {
+routerAuthentication.route('/login').post(passport.authenticate('local'), (req, res) => {
 	res.send('success')
 })
 
-authentication.route('/user').get((req, res) => {
+routerAuthentication.route('/user').get((req, res) => {
 	res.send(req.user)
 })
 
-authentication.route('/logout').get((req, res, next) => {
+routerAuthentication.route('/logout').get((req, res, next) => {
 	req.logout((err) => {
 		if (err) return next(err)
 	})
 	res.send('success')
 })
 
-authentication.route('/deleteuser').post(isAdministrator, async (req, res) => {
+routerAuthentication.route('/deleteuser').post(isAdministrator, async (req, res) => {
 	const { id } = req?.body
 	await User.findByIdAndDelete(id).catch((err) => {
 		throw err
@@ -55,7 +55,7 @@ authentication.route('/deleteuser').post(isAdministrator, async (req, res) => {
 	res.send('success')
 })
 
-authentication.route('/getallusers').get(isAdministrator, async (req, res) => {
+routerAuthentication.route('/getallusers').get(isAdministrator, async (req, res) => {
 	await User.find({})
 		.then((data: DatabaseUserInterface[]) => {
 			const filteredUsers: UserInterface[] = []

@@ -30,7 +30,7 @@ export default function AdminPage() {
 				userid = item.id
 			}
 		})
-		axios.post('http://localhost:8080/deleteuser', { id: userid! }, { withCredentials: true })
+		axios.post('/deleteuser', { id: userid! }, { withCredentials: true })
 	}
 	return (
 		<div>

@@ -3,7 +3,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import io from 'socket.io-client'
 import { Message } from '../Interfaces/ChatInterface'
 import { myContext } from './Context'
-const socket = io('http://localhost:8080/')
+const socket = io('/')
+console.log(socket)
 
 export default function Chat() {
 	const ctx = useContext(myContext)
