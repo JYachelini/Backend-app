@@ -4,6 +4,12 @@ import axios, { AxiosResponse } from 'axios'
 export default function Register() {
 	const [username, setUsername] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
+	const [firstName, setFirstName] = useState<string>('')
+	const [lastName, setLastName] = useState<string>('')
+	const [address, setAddress] = useState<string>('')
+	const [age, setAge] = useState<string>('')
+	const [phone, setPhone] = useState<string>('')
+	const [avatar, setAvatar] = useState<string>('')
 
 	const register = () => {
 		axios
@@ -12,6 +18,12 @@ export default function Register() {
 				{
 					username,
 					password,
+					firstName,
+					lastName,
+					address,
+					age,
+					phone,
+					avatar
 				},
 				{
 					withCredentials: true,
@@ -30,6 +42,12 @@ export default function Register() {
 			<h1 className='border border-orange-500 p-2'>Register</h1>
 			<input type='text' placeholder='username' onChange={(e) => setUsername(e.target.value)} className='border border-orange-500 p-2'/>
 			<input type='text' placeholder='password' onChange={(e) => setPassword(e.target.value)} className='border border-orange-500 p-2'/>
+			<input type='text' placeholder='first name' onChange={(e) => setFirstName(e.target.value)} className='border border-orange-500 p-2'/>
+			<input type='text' placeholder='last name' onChange={(e) => setLastName(e.target.value)} className='border border-orange-500 p-2'/>
+			<input type='text' placeholder='address' onChange={(e) => setAddress(e.target.value)} className='border border-orange-500 p-2'/>
+			<input type='text' placeholder='age' onChange={(e) => setAge(e.target.value)} className='border border-orange-500 p-2'/>
+			<input type='text' placeholder='phone' onChange={(e) => setPhone(e.target.value)} className='border border-orange-500 p-2'/>
+			<input type='text' placeholder='avatar' onChange={(e) => setAvatar(e.target.value)} className='border border-orange-500 p-2'/>
 			<button onClick={register} className='border border-orange-500 p-2'>Register</button>
 			</div>
 		</div>

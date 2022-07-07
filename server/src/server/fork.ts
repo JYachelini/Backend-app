@@ -2,7 +2,7 @@ import { env } from "../config/env"
 import { logger } from "./logs"
 
 process.on('exit', () => {
-	logger?.info(`Worker ${process.pid} killed`)
+	logger?.warn(`Worker ${process.pid} killed`)
 })
 
 process.send!('start')

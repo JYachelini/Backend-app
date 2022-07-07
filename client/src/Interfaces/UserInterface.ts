@@ -1,5 +1,11 @@
 export interface UserInterface{
-    id: string,
-    username: string,
-    isAdmin: boolean
+    username: string
+	isAdmin: boolean
+	id: string
+	firstName: string
+	lastName: string
+	address: string
+	age: string
+	phone: string
+	avatar: string
 }

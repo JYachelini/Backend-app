@@ -17,7 +17,7 @@ import { routerCart } from '../Routes/Cart'
 import { routerChat } from '../Routes/Chat'
 import { routerProduct } from '../Routes/Products'
 import { routerRandom } from '../Routes/Random'
-
+import { routerMail } from '../Routes/Mail'
 
 // Compression
 import compression from 'compression'
@@ -77,8 +77,15 @@ passport.deserializeUser(async (id: string, cb) => {
 		.then((user: DatabaseUserInterface) => {
 			const userInformation: UserInterface = {
 				username: user.username,
+				mail: user.mail,
 				isAdmin: user.isAdmin,
 				id: user._id,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				address: user.address,
+				age: user.age,
+				phone: user.phone,
+				avatar: user.avatar,
 			}
 			cb(null, userInformation)
 		})
@@ -89,7 +96,6 @@ import path from 'path'
 
 // Path public client
 const root = path.join(__dirname, '..', '..', '..', 'client/build')
-console.log(root)
 
 const app = express()
 
@@ -99,7 +105,11 @@ app.use(session({ secret: 'secretcode', resave: true, saveUninitialized: true })
 app.use(cookieParser())
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(express.static(root))
+// app.use(express.static(root))
+
+// Logs
+app.use(logRoute)
+// app.use(logInvalid)
 
 // Routes
 app.use(routerAuthentication)
@@ -107,6 +117,8 @@ app.use(routerCart)
 app.use(routerChat)
 app.use(routerProduct)
 app.use(routerRandom)
+app.use(routerMail)
+
 
 // Desafios
 
@@ -136,13 +148,9 @@ app.get('/infoCompressed', compression(), (req, res) => {
 	res.send(info)
 })
 
-app.get('/*', (req, res) => {
-	res.redirect('/')
-})
+app.get('/*',logInvalid)
 
-// Logs
-app.use(logRoute)
-app.use(logInvalid)
+// Log
 app.use(logProductsError)
 
 export default app

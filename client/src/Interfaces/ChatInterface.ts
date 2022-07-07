@@ -1,10 +1,11 @@
 interface Author {
-	// id: string
-	// fristName: string
-	// lastName: string
-	// age: number
-	alias: string
-	// avatar: string
+	id: string
+	username: string
+	fristName: string
+	lastName: string
+	age: number
+	phone: string
+	avatar: string
 }
 
 export interface Message {

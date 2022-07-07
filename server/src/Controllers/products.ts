@@ -1,4 +1,5 @@
 import { Model } from 'mongoose'
+import { logger } from '../server/logs'
 import { ProductInterface } from '../Interfaces/CartInterface'
 import ProductModel from '../Models/ProductModel'
 
@@ -31,7 +32,7 @@ export default class Products {
 			await productToAdd.save()
 			return newID
 		} catch (err) {
-			console.log(err)
+			logger!.error(`Can't save product: ${err}`)
 			throw new Error(`Can't save product`)
 		}
 	}
@@ -40,7 +41,7 @@ export default class Products {
 		try {
 			return await this.collection.find()
 		} catch (err) {
-			console.log(err)
+			logger!.error(`Error returning all product: ${err}`)
 			throw new Error('Error returning all products')
 		}
 	}
@@ -49,7 +50,7 @@ export default class Products {
 		try {
 			return await this.collection.findOne({ id: id })
 		} catch (err) {
-			console.log(err)
+			logger!.error(`Error getting the product: ${err}`)
 			throw new Error('Error getting the product')
 		}
 	}
@@ -57,7 +58,6 @@ export default class Products {
 	modifyById = async (newValues: ProductInterface, id: number): Promise<boolean> => {
 		try {
 			const product = await this.getById(id)
-			console.log(product)
 			if (product != null) {
 				if (newValues.nombre) {
 					await this.collection
@@ -101,7 +101,7 @@ export default class Products {
 				return false
 			}
 		} catch (err) {
-			console.log(err)
+			logger!.error(`Error trying to modify the product: ${err}`)
 			throw new Error('Error trying to modify the product')
 		}
 	}
@@ -115,7 +115,8 @@ export default class Products {
 			} else {
 				return false
 			}
-		} catch {
+		} catch(err) {
+			logger!.error(`Error deleting the product: ${err}`)
 			throw new Error('Error deleting the product')
 		}
 	}
@@ -123,7 +124,8 @@ export default class Products {
 	deleteAll = async (): Promise<void> => {
 		try {
 			await this.collection.remove()
-		} catch {
+		} catch(err) {
+			logger!.error(`Error deleting all products: ${err}`)
 			throw new Error('Error deleting all products')
 		}
 	}

@@ -1,4 +1,5 @@
 import { Model } from 'mongoose'
+import { logger } from '../server/logs'
 import { CartInterface, ProductInterface } from '../Interfaces/CartInterface'
 import CartModel from '../Models/CartModel'
 
@@ -22,7 +23,7 @@ export default class Cart {
 			await cart.save()
 			return newID
 		} catch (err) {
-			console.log(err)
+			logger!.error(`Can't create cart ${err}`)
 			throw new Error(`Can't create cart`)
 		}
 	}
@@ -31,7 +32,7 @@ export default class Cart {
 		try {
 			return await this.collection.find()
 		} catch (err) {
-			console.log(err)
+			logger!.error(`Error getting all carts ${err}`)
 			throw new Error('Error getting all carts')
 		}
 	}
@@ -43,7 +44,7 @@ export default class Cart {
 			const id = carts[el]._id
 			return this.collection.findById(id)
 		} catch (error) {
-			console.log(error)
+			logger!.error(`Error getting cart by ID: ${error}`)
 			throw new Error('Error getting cart by ID')
 		}
 	}
@@ -87,7 +88,7 @@ export default class Cart {
 				)
 			}
 		} catch (err) {
-			console.log(err)
+			logger!.error(`Error adding product: ${err}`)
 			throw new Error('Error adding product')
 		}
 	}
@@ -100,9 +101,11 @@ export default class Cart {
 			if (products) {
 				return products
 			} else {
+				logger!.error(`Product didn't exist`)
 				throw new Error(`Product didn't exist`)
 			}
-		} catch {
+		} catch(err) {
+			logger!.error(`Error getting the product: ${err}`)
 			throw new Error('Error getting the product')
 		}
 	}
@@ -123,7 +126,7 @@ export default class Cart {
 				}
 			}
 		} catch (err) {
-			console.log(err)
+			logger!.error(`Error deleting cart: ${err}`)
 			throw new Error('Error deleting cart')
 		}
 	}
@@ -151,7 +154,8 @@ export default class Cart {
 			} else {
 				return false
 			}
-		} catch {
+		} catch(err) {
+			logger!.error(`Error deleting the product ${err}`)
 			throw new Error('Error deleting the product')
 		}
 	}
@@ -161,7 +165,7 @@ export default class Cart {
 			await this.collection.remove()
 			return true
 		} catch (err) {
-			console.log(err)
+			logger!.error(`Error deleting all carts: ${err}`)
 			throw new Error('error deleting all carts')
 		}
 	}
