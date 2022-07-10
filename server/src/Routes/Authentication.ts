@@ -11,26 +11,27 @@ const Mail = new Mailer()
 export const routerAuthentication = Router()
 
 routerAuthentication.route('/register').post(async (req, res) => {
-	const { username, mail, password, firstName, lastName, address, age, phone, avatar } = req?.body
+	const { username, password, mail, firstName, lastName, address, age, phone, avatar } = req?.body
 	const verifyUser: boolean =
 		!username ||
-		!mail ||
 		!password ||
+		!mail ||
 		!firstName ||
 		!lastName ||
 		!address ||
 		!age ||
 		!phone ||
 		typeof username !== 'string' ||
-		typeof mail !== 'string' ||
 		typeof password !== 'string' ||
+		typeof mail !== 'string' ||
 		typeof firstName !== 'string' ||
 		typeof lastName !== 'string' ||
 		typeof address !== 'string' ||
 		typeof age !== 'string' ||
 		typeof phone !== 'string'
+
 	if (verifyUser) {
-		res.status(400).send('invalid credentials')
+		res.send('invalid credentials')
 		return
 	}
 	await User.findOne({ username })
@@ -38,13 +39,13 @@ routerAuthentication.route('/register').post(async (req, res) => {
 			if (err) throw err
 		})
 		.then(async (doc: DatabaseUserInterface) => {
-			if (doc) res.status(400).send('username exist')
+			if (doc) res.send('username exist')
 			if (!doc) {
 				const hashedPassword = await bcrypt.hash(password, 10)
 				const newUser = new User({
 					username,
-					mail,
 					password: hashedPassword,
+					mail,
 					firstName,
 					lastName,
 					address,
@@ -53,7 +54,7 @@ routerAuthentication.route('/register').post(async (req, res) => {
 					avatar,
 				})
 
-				await newUser.save().then(await Mail.sendEmail(req,res))
+				await newUser.save().then(await Mail.sendEmail(req, res))
 			}
 		})
 })

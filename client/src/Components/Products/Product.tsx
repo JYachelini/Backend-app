@@ -3,7 +3,8 @@ import { useContext, useState } from 'react'
 import { myContext } from '../../Pages/Context'
 
 export default function Product({ product }: any) {
-	const ctx = useContext(myContext)
+	const ctx = useContext(myContext)[0] /* 0 = user */
+	const {addToCart} = useContext(myContext)[2] /* 2 = addToCart Function */
 	const [edit, setEdit] = useState(false)
 
 	const handleEdit = () => {
@@ -46,6 +47,9 @@ export default function Product({ product }: any) {
 	const handleDelete = async (e: any) => {
 		e.preventDefault()
 		try {
+			axios.post('/api/productos/delete/',{id:product.id}, {
+				withCredentials: true,
+			})
 			let res = await fetch('/api/productos/', {
 				method: 'DELETE',
 				headers: {
@@ -55,7 +59,6 @@ export default function Product({ product }: any) {
 					id: product.id,
 				}),
 			})
-			let resJson = await res.json()
 			if (res.status === 202) {
 				setMensajeDel('Producto eliminado')
 			} else {
@@ -69,14 +72,15 @@ export default function Product({ product }: any) {
 	return (
 		<>
 			<article id={String(product.id)} className='flex flex-col w-64 h-80 border border-red-500 p-2'>
-				<div className='items-center border border-rose-500 h-[70%] flex'>
-					<img className='w-auto p-5' src={product.url} alt={product.nombre} />
+				<div className='items-center border border-rose-500 flex justify-center'>
+					<img className='w-auto p-5 h-48' src={product.url} alt={product.nombre} />
 				</div>
 				<div className='flex flex-col h-[30%]'>
 					<span className='text-center text-3xl'>{product.nombre}</span>
 					<span className='text-center text-gray-400'>{product.descripcion}</span>
 					<span className='text-center text-xl font-bold'>{product.precio}$</span>
 				</div>
+				<div><button id={product.id} onClick={addToCart}>Agregar</button></div>
 				{ctx.isAdmin ? (
 					<div>
 						<button onClick={handleEdit}>Editar</button>

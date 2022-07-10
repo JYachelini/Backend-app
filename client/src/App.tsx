@@ -10,7 +10,7 @@ import Register from './Pages/Register'
 import './App.css'
 
 function App() {
-	const ctx = useContext(myContext)
+	const ctx = useContext(myContext)[0] /* 0 = user */
 	return (
 		<BrowserRouter>
 			<NavBar />

@@ -4,7 +4,7 @@ import { UserInterface } from '../Interfaces/UserInterface'
 import { myContext } from './Context'
 
 export default function AdminPage() {
-	const ctx = useContext(myContext)
+	const ctx = useContext(myContext)[0] /* 0 = user */
 	const [data, setData] = useState<UserInterface[]>()
 	const [selectedUser, setSelectedUser] = useState<string>()
 	useEffect(() => {

@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { Message } from '../Interfaces/ChatInterface'
-import { save as saveMessages, get as getMessages } from '../Controllers/messages'
+import { save as saveMessages, get as getMessages } from '../Controllers/messages.controller'
 
 export const routerChat = Router()
 

@@ -169,4 +169,14 @@ export default class Cart {
 			throw new Error('error deleting all carts')
 		}
 	}
+	getLastCart = async()=>{
+		try{
+			const carts = await this.getAllCart()
+			const lastCart = carts.at(-1)
+			return lastCart!.id
+		} catch (err) {
+			logger!.error(`error getting last cart: ${err}`)
+			throw new Error('error getting last cart')
+		}
+	}
 }

@@ -1,10 +1,6 @@
 interface Author {
-	id: string
+	// id: string
 	username: string
-	fristName: string
-	lastName: string
-	age: number
-	phone: string
 	avatar: string
 }
 

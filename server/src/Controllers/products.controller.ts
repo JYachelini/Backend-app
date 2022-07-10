@@ -20,14 +20,13 @@ export default class Products {
 	save = async (obj: Product): Promise<number> => {
 		try {
 			const products = await this.getAll()
-			const timestamp = Date.now()
 			let newID: number
 			if (products.length == 0) {
 				newID = 1
 			} else {
 				newID = Number(products[products.length - 1].id) + 1
 			}
-			const newProduct: ProductInterface = { id: newID, timestamp: timestamp, ...obj }
+			const newProduct: ProductInterface = { id: newID, ...obj }
 			const productToAdd = new this.collection(newProduct)
 			await productToAdd.save()
 			return newID
@@ -58,44 +57,19 @@ export default class Products {
 	modifyById = async (newValues: ProductInterface, id: number): Promise<boolean> => {
 		try {
 			const product = await this.getById(id)
+
 			if (product != null) {
-				if (newValues.nombre) {
-					await this.collection
-						.findOneAndUpdate(
-							{ id: id },
-							{
-								nombre: newValues.nombre,
-							},
-							{ new: true }
-						)
-						.catch((err) => {
-							throw err
-						})
+				const productModifed: ProductInterface = {
+					id: product.id,
+					nombre: newValues.nombre || product?.nombre,
+					descripcion: newValues.descripcion || product.descripcion,
+					codigo: product.codigo,
+					url: newValues.url || product.url,
+					precio: newValues.precio || product.precio,
+					stock: newValues.stock || product.stock,
 				}
-				if (newValues.descripcion) {
-					await this.collection.updateOne(
-						{ id: id },
-						{
-							$set: { descripcion: newValues.descripcion },
-						}
-					)
-				}
-				if (newValues.url) {
-					await this.collection.updateOne(
-						{ id: id },
-						{
-							$set: { url: newValues.url },
-						}
-					)
-				}
-				if (newValues.precio) {
-					await this.collection.updateOne(
-						{ id: id },
-						{
-							$set: { precio: newValues.precio },
-						}
-					)
-				}
+				console.log(productModifed)
+				await this.collection.findOneAndUpdate({ id: id }, { nombre: productModifed.nombre, descripcion: productModifed.descripcion, codigo: productModifed.codigo, url: productModifed.url, precio: productModifed.precio, stock: productModifed.stock })
 				return true
 			} else {
 				return false
@@ -115,7 +89,7 @@ export default class Products {
 			} else {
 				return false
 			}
-		} catch(err) {
+		} catch (err) {
 			logger!.error(`Error deleting the product: ${err}`)
 			throw new Error('Error deleting the product')
 		}
@@ -124,7 +98,7 @@ export default class Products {
 	deleteAll = async (): Promise<void> => {
 		try {
 			await this.collection.remove()
-		} catch(err) {
+		} catch (err) {
 			logger!.error(`Error deleting all products: ${err}`)
 			throw new Error('Error deleting all products')
 		}

@@ -1,13 +1,12 @@
 import mongoose from 'mongoose'
 const product = new mongoose.Schema({
 	id: { type: Number, required: true },
-	timestamps: { type: Number },
-	name: { type: String, required: true },
-	description: { type: String, required: true },
-	code: { type: String, required: true },
+	nombre: { type: String, required: true },
+	descripcion: { type: String, required: true },
+	codigo: { type: String, required: true },
 	url: { type: String, required: true },
-	price: { type: Number, required: true },
-	stock: { type: Number },
+	precio: { type: String, required: true },
+	stock: { type: String },
 })
 
 export default mongoose.model('products', product)

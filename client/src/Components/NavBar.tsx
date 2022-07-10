@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom'
 import { myContext } from '../Pages/Context'
 
 export default function NavBar() {
-	const ctx = useContext(myContext)
+	const ctx = useContext(myContext)[0] /* 0 = user */
+	const cart = useContext(myContext)[1] /* 1 = cart */
+
 	const logout = () => {
 		axios.get('/logout', { withCredentials: true }).then((res: AxiosResponse) => {
 			if (res.data === 'success') {

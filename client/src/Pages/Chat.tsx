@@ -4,14 +4,12 @@ import io from 'socket.io-client'
 import { Message } from '../Interfaces/ChatInterface'
 import { myContext } from './Context'
 const socket = io('/')
-console.log(socket)
 
 export default function Chat() {
-	const ctx = useContext(myContext)
+	const ctx = useContext(myContext)[0] /* 0 = user */
 	const [systemMessage, setSystemMessage] = useState<string>()
 	const [messagesList, setMessagesList] = useState<Message[]>([])
 	const [newMessage, setNewMessage] = useState<string>()
-
 
 	const room = 'chatRoom'
 	socket.emit('join_room', room)
@@ -40,13 +38,15 @@ export default function Chat() {
 	useEffect(() => {
 		const chat: any = document.querySelector('#chat')
 		chat!.scrollTop = chat!.scrollTopMax
+		console.log(chat)
 	}, [messagesList])
 
 	const sendMessage = async (e: any) => {
 		e.preventDefault()
 		const messageInformation: Message = {
 			author: {
-				alias: ctx.username!,
+				username: ctx.username!,
+				avatar: ctx.avatar!,
 			},
 			text: newMessage!,
 		}
@@ -73,10 +73,12 @@ export default function Chat() {
 						) : (
 							messagesList.map((msg, index) => {
 								return (
-									<div key={index} className={`flex ${ctx.username === msg.author.alias ? 'justify-end' : ''}`}>
-										<div className='p-2 max-w-[50%] break-words flex flex-col'>
-											<span className={`px-2 ${ctx.username !== msg.author.alias ? 'text-left' : ''}`}>{msg.author.alias}</span>
-											<span className='border border-red-500 rounded-xl p-2'>{msg.text}</span>
+									<div key={index} className={`flex ${ctx.username === msg.author.username ? 'justify-end' : ''}`}>
+										<div className={`p-2 max-w-[50%] max-h-full break-words flex flex-col gap-1 ${ctx.username !== msg.author.username ? 'text-left' : ''}`}>
+											<span className={`px-2 max-h-8 flex justify-end items-center gap-1 ${ctx.username !== msg.author.username ? 'flex-row-reverse' : ''}`}>
+												{msg.author.username} <img className='max-h-full rounded-full' src={msg.author.avatar} alt='' />
+											</span>
+											<span className={`border border-red-500 rounded-xl p-2`}>{msg.text}</span>
 										</div>
 									</div>
 								)

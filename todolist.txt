@@ -1,0 +1,20 @@
+Backend
+    - Cambiar datos de usuarios a email, edad, address, etc... ✅
+    - Usar multer para cargar las imagenes al servidor
+    - Al registrar un usuario que se envie un mail al administrador con los datos ✅
+    - El usuario realiza un pedido con su carrito y sus items que va a comprar, este pedido se envia al mail del administrador,
+      con datos del carrito y datos del usuario. El usuario recibirá un mensaje de texto que el pedido fue recibido y se
+      encuentra en progreso.
+
+
+
+
+
+-----------------------------------------------
+
+Frontend
+    - Cambiar el modulo de registro a los requisitos actuales ✅
+    - Mostrar más caracteristicas de los usuarios
+    - Hacer un carrito de compras funcional, que al generar el pedido mande peticion al backend para realizar el pedido.
+            - Guarda el carrito ✅
+            - Genera el pedido.

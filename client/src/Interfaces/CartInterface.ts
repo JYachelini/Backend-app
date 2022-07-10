@@ -10,9 +10,8 @@ export interface ProductInterface {
 }
 
 export interface CartInterface {
-	_id: string
+	_id?: string
 	id: number
-	timestamp: number
 	productos: ProductInterface[]
 }
 

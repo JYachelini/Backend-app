@@ -1,12 +1,19 @@
 import { Router } from 'express'
-import Products from '../Controllers/products'
+import Products from '../Controllers/products.controller'
 import { ProductInterface } from '../Interfaces/CartInterface'
 import { isAdministrator } from '../Middlewares/isAdministrator'
 
 const products = new Products()
 export const routerProduct = Router()
 
-routerProduct.route('/api/productos/:id?')
+routerProduct.route('/api/productos/get').post(async(req,res)=>{
+	let id:number=req.body.id
+	const product = await products.getById(id)
+	product ? res.status(200).send(product) : res.status(404).json({ error: ' Error with ID ' })
+})
+
+routerProduct
+	.route('/api/productos/:id?')
 	.get(async (req, res) => {
 		let id: number
 		if (req.body.id) {
@@ -33,15 +40,16 @@ routerProduct.route('/api/productos/:id?')
 	})
 	.put(isAdministrator, async (req, res) => {
 		const newValues: ProductInterface = req.body
-		let  id = Number(req.body.id)
+		let id = Number(req.body.id)
 		await products.modifyById(newValues, id).then((result) => (result ? res.status(202).json('Producto modificado') : res.status(404).json('No se encontró el producto')))
 	})
-	.delete(isAdministrator, async (req, res) => {
-		let id: number
-		if (req.body.id) {
-			id = Number(req.body.id)
-		} else {
-			id = Number(req.params.id)
-		}
-		products.deleteById(id).then((result) => (result ? res.status(202).json('Producto eliminado') : res.status(404).json({ error: 'El producto no existe' })))
-	})
+
+routerProduct.route('/api/products/delete/:id').post(isAdministrator, async (req, res) => {
+	let id: number
+	if (req.body.id) {
+		id = Number(req.body.id)
+	} else {
+		id = Number(req.params.id)
+	}
+	products.deleteById(id).then((result) => (result ? res.status(202).json('Producto eliminado') : res.status(404).json({ error: 'El producto no existe' })))
+})

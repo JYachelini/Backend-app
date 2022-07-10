@@ -1,6 +1,5 @@
 export interface ProductInterface {
     id: number
-    timestamp: number
 	nombre: string
 	descripcion: string
 	codigo: string
@@ -13,7 +12,6 @@ export interface ProductInterface {
 export interface CartInterface {
 	_id: string
 	id: number
-	timestamp: number
 	productos: ProductInterface[]
 }
 

@@ -46,6 +46,6 @@ export default class Mailer {
 
 		logger?.info(`Email sent ${info.messageId}`)
 
-		res ? res.send('Successful') : null
+		res ? res.send('success') : null
 	}
 }

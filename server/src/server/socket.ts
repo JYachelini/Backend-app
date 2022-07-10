@@ -3,7 +3,7 @@ import { Server as ioServer } from 'socket.io'
 import app from './app'
 
 // Controllers
-import { save as saveMessages } from '../Controllers/messages'
+import { save as saveMessages } from '../Controllers/messages.controller'
 import { env } from '../config/env'
 
 // Socket io
