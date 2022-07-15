@@ -35,5 +35,10 @@ export default function Context(props: PropsWithChildren<any>) {
 		}
 	}
 
-	return <myContext.Provider value={[user!, cart!, { addToCart }]}>{props.children}</myContext.Provider>
+	const createOrder = async (e: any) => {
+		e.preventDefault()
+		await axios.post('/api/carrito', { cart: cart, username: user?.username, mail: user?.mail, address: user?.address, firstName: user?.firstName, lastName: user?.lastName, phone: user?.phone }, { withCredentials: true })
+	}
+
+	return <myContext.Provider value={[user!, cart!, { addToCart }, { createOrder }]}>{props.children}</myContext.Provider>
 }

@@ -8,6 +8,15 @@ export default class Cart {
 	constructor() {
 		this.collection = CartModel
 	}
+	createOrder = async(cart:CartInterface)=>{
+		try {
+			const newCart = new this.collection(cart)
+			await newCart.save()
+		} catch (error) {
+			logger!.error(`Error creating order: ${error}`)
+			throw new Error(error)
+		}
+	}
 	create = async (): Promise<number> => {
 		try {
 			const carts = await this.getAllCart()
@@ -179,4 +188,6 @@ export default class Cart {
 			throw new Error('error getting last cart')
 		}
 	}
+
+	
 }

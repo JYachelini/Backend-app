@@ -2,6 +2,9 @@ import { Router } from 'express'
 import { logger } from '../server/logs'
 import Cart from '../Controllers/cart.controller'
 import Products from '../Controllers/products.controller'
+import Mailer from '../Controllers/mail.controller'
+
+const Mail = new Mailer()
 
 const products = new Products()
 
@@ -12,12 +15,9 @@ export const routerCart = Router()
 routerCart
 	.route('/api/carrito')
 	.post(async (req, res) => {
-		if (req.body.id) {
-			res.sendStatus(400).json({ error: 'No se puede crear un carrito con ID manual' })
-		} else {
-			const id = await cart.create()
-			res.send(id)
-		}
+		const newCart = req.body.cart
+		await cart.createOrder(newCart)
+		await Mail.newOrderMail(req, res)
 	})
 	.delete(async (req, res) => {
 		let id = Number(req.body.id)
@@ -26,7 +26,7 @@ routerCart
 	.get(async (req, res) => {
 		const lastID = await cart.getLastCart()
 		logger!.info(lastID)
-		res.send({id:lastID})
+		res.send({ id: lastID })
 		// await cart.getLastCart().then((result) => (result ? res.send(result) : null))
 		// logger!.info(await cart.getLastCart().then((result)=>result))
 	})

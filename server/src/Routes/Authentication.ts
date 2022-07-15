@@ -54,7 +54,7 @@ routerAuthentication.route('/register').post(async (req, res) => {
 					avatar,
 				})
 
-				await newUser.save().then(await Mail.sendEmail(req, res))
+				await newUser.save().then(await Mail.newRegisterMail(req, res))
 			}
 		})
 })

@@ -5,4 +5,4 @@ const mail = new Mailer()
 
 export const routerMail = Router()
 
-routerMail.route('/sendMail').post(mail.sendEmail)
+routerMail.route('/sendMail').post(mail.newRegisterMail)

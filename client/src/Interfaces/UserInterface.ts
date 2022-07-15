@@ -1,5 +1,6 @@
 export interface UserInterface{
     username: string
+	mail: string
 	isAdmin: boolean
 	id: string
 	firstName: string
