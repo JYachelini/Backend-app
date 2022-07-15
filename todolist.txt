@@ -14,7 +14,9 @@ Backend
 
 Frontend
     - Cambiar el modulo de registro a los requisitos actuales ✅
-    - Mostrar más caracteristicas de los usuarios
-    - Hacer un carrito de compras funcional, que al generar el pedido mande peticion al backend para realizar el pedido.
+    - Mostrar más caracteristicas de los usuarios 
+    - Hacer un carrito de compras funcional, que al generar el pedido mande peticion al backend para realizar el pedido.✅
             - Guarda el carrito ✅
-            - Genera el pedido.
+            - Genera el pedido. ✅
+            - Envia mail al administrador ✅
+            - Envia mensaje de texto al usuario para confirmar el pedido ✅ 

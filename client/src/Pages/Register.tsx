@@ -10,36 +10,37 @@ export default function Register() {
 	const [address, setAddress] = useState<string>('')
 	const [age, setAge] = useState<string>('')
 	const [phone, setPhone] = useState<string>('')
-	const [avatar, setAvatar] = useState<string>('')
+	const [avatar, setAvatar] = useState<any>()
+
 
 	const [error, setError] = useState<string>('')
 
 	const register = () => {
+		const data = new FormData()
+		data.append('username',username)
+		data.append('password',password)
+		data.append('mail',mail)
+		data.append('fristName',firstName)
+		data.append('lastName',lastName)
+		data.append('address',address)
+		data.append('phone',phone)
+		data.append('age',age)
+		data.append('file',avatar)
 		axios
 			.post(
 				'/register',
-				{
-					username,
-					password,
-					mail,
-					firstName,
-					lastName,
-					address,
-					age,
-					phone,
-					avatar,
-				},
+				data,
 				{
 					withCredentials: true,
 				}
 			)
-			.then((res: AxiosResponse) => {
-				if (res.data === 'success') {
-					window.location.href = '/login'
-				} else {
-					setError(res.data)
-				}
-			})
+			// .then((res: AxiosResponse) => {
+			// 	if (res.data === 'success') {
+			// 		window.location.href = '/login'
+			// 	} else {
+			// 		setError(res.data)
+			// 	}
+			// })
 	}
 
 	return (
@@ -54,7 +55,7 @@ export default function Register() {
 				<input type='text' placeholder='address' onChange={(e) => setAddress(e.target.value)} className='border border-orange-500 p-2' />
 				<input type='text' placeholder='age' onChange={(e) => setAge(e.target.value)} className='border border-orange-500 p-2' />
 				<input type='text' placeholder='phone' onChange={(e) => setPhone(e.target.value)} className='border border-orange-500 p-2' />
-				<input type='text' placeholder='avatar' onChange={(e) => setAvatar(e.target.value)} className='border border-orange-500 p-2' />
+				<input type='file' placeholder='avatar' onChange={(e) => setAvatar(e.target.files![0])} className='border border-orange-500 p-2' />
 				<button onClick={register} className='border border-orange-500 p-2'>
 					Register
 				</button>

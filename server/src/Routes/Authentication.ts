@@ -5,58 +5,68 @@ import { DatabaseUserInterface, UserInterface } from '../Interfaces/UserInterfac
 import bcrypt from 'bcryptjs'
 import { isAdministrator } from '../Middlewares/isAdministrator'
 import Mailer from '../Controllers/mail.controller'
+import multer from 'multer'
+import {promisify} from 'util'
+import stream from 'stream'
+const pipeline = promisify(stream.pipeline)
+
+const upload = multer()
 
 const Mail = new Mailer()
 
 export const routerAuthentication = Router()
 
-routerAuthentication.route('/register').post(async (req, res) => {
-	const { username, password, mail, firstName, lastName, address, age, phone, avatar } = req?.body
-	const verifyUser: boolean =
-		!username ||
-		!password ||
-		!mail ||
-		!firstName ||
-		!lastName ||
-		!address ||
-		!age ||
-		!phone ||
-		typeof username !== 'string' ||
-		typeof password !== 'string' ||
-		typeof mail !== 'string' ||
-		typeof firstName !== 'string' ||
-		typeof lastName !== 'string' ||
-		typeof address !== 'string' ||
-		typeof age !== 'string' ||
-		typeof phone !== 'string'
+routerAuthentication.route('/register').post(upload.single('file'), async (req, res) => {
+	const {file, body:{username, password, mail, firstName, lastName, address, age, phone}} = req?.body
+	// const verifyUser: boolean =
+	// 	!username ||
+	// 	!password ||
+	// 	!mail ||
+	// 	!firstName ||
+	// 	!lastName ||
+	// 	!address ||
+	// 	!age ||
+	// 	!phone ||
+	// 	typeof username !== 'string' ||
+	// 	typeof password !== 'string' ||
+	// 	typeof mail !== 'string' ||
+	// 	typeof firstName !== 'string' ||
+	// 	typeof lastName !== 'string' ||
+	// 	typeof address !== 'string' ||
+	// 	typeof age !== 'string' ||
+	// 	typeof phone !== 'string'
 
-	if (verifyUser) {
-		res.send('invalid credentials')
-		return
-	}
-	await User.findOne({ username })
-		.catch((err) => {
-			if (err) throw err
-		})
-		.then(async (doc: DatabaseUserInterface) => {
-			if (doc) res.send('username exist')
-			if (!doc) {
-				const hashedPassword = await bcrypt.hash(password, 10)
-				const newUser = new User({
-					username,
-					password: hashedPassword,
-					mail,
-					firstName,
-					lastName,
-					address,
-					age,
-					phone,
-					avatar,
-				})
+	// if (verifyUser) {
+	// 	res.send('invalid credentials')
+	// 	return
+	// }
+	// await User.findOne({ username })
+	// 	.catch((err) => {
+	// 		if (err) throw err
+	// 	})
+	// 	.then(async (doc: DatabaseUserInterface) => {
+	// 		if (doc) res.send('username exist')
+	// 		if (!doc) {
 
-				await newUser.save().then(await Mail.newRegisterMail(req, res))
-			}
-		})
+	// 			const hashedPassword = await bcrypt.hash(password, 10)
+	// 			const newUser = new User({
+	// 				username,
+	// 				password: hashedPassword,
+	// 				mail,
+	// 				firstName,
+	// 				lastName,
+	// 				address,
+	// 				age,
+	// 				phone,
+	// 				avatar,
+	// 			})
+
+	// 			await newUser.save().then(await Mail.newRegisterMail(req, res))
+	// 		}
+	// 	})
+	console.log(req.body)
+	console.log(req.file)
+	await pipeline(file.stream)
 })
 
 routerAuthentication.route('/login').post(passport.authenticate('local'), (req, res) => {

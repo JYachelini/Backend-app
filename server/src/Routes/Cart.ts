@@ -3,6 +3,7 @@ import { logger } from '../server/logs'
 import Cart from '../Controllers/cart.controller'
 import Products from '../Controllers/products.controller'
 import Mailer from '../Controllers/mail.controller'
+import { confirmationOrder } from '../Controllers/phoneMSG.controller'
 
 const Mail = new Mailer()
 
@@ -17,6 +18,7 @@ routerCart
 	.post(async (req, res) => {
 		const newCart = req.body.cart
 		await cart.createOrder(newCart)
+		confirmationOrder(newCart)
 		await Mail.newOrderMail(req, res)
 	})
 	.delete(async (req, res) => {
@@ -25,7 +27,6 @@ routerCart
 	})
 	.get(async (req, res) => {
 		const lastID = await cart.getLastCart()
-		logger!.info(lastID)
 		res.send({ id: lastID })
 		// await cart.getLastCart().then((result) => (result ? res.send(result) : null))
 		// logger!.info(await cart.getLastCart().then((result)=>result))

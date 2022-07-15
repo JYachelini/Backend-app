@@ -17,6 +17,8 @@ export const env = {
     FRONTEND: process.env.FRONTEND || 'http://localhost:3000',
     ADMIN_MAIL: process.env.ADMIN_MAIL,
     ADMIN_MAIL_PASSWORD: process.env.ADMIN_MAIL_PASSWORD,
+    TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
+    TWILIO_ACCOUNT_TOKEN: process.env.TWILIO_ACCOUNT_TOKEN,
     arguments: process.argv.slice(2),   // argumentos de entrada
     os: process.platform,               // OS
     NodeVersion: process.version,       // Version node

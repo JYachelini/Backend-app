@@ -19,6 +19,9 @@ import { routerProduct } from '../Routes/Products'
 import { routerRandom } from '../Routes/Random'
 import { routerMail } from '../Routes/Mail'
 
+import { test } from '../Controllers/phoneMSG.controller'
+
+
 // Compression
 import compression from 'compression'
 
@@ -118,6 +121,11 @@ app.use(routerChat)
 app.use(routerProduct)
 app.use(routerRandom)
 app.use(routerMail)
+
+app.get('/test',(req,res)=>{
+	test()
+	res.send('success')
+})
 
 
 // Desafios
