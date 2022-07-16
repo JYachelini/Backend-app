@@ -20,7 +20,7 @@ export default function Register() {
 		data.append('username',username)
 		data.append('password',password)
 		data.append('mail',mail)
-		data.append('fristName',firstName)
+		data.append('firstName',firstName)
 		data.append('lastName',lastName)
 		data.append('address',address)
 		data.append('phone',phone)
@@ -34,13 +34,13 @@ export default function Register() {
 					withCredentials: true,
 				}
 			)
-			// .then((res: AxiosResponse) => {
-			// 	if (res.data === 'success') {
-			// 		window.location.href = '/login'
-			// 	} else {
-			// 		setError(res.data)
-			// 	}
-			// })
+			.then((res: AxiosResponse) => {
+				if (res.data === 'success') {
+					window.location.href = '/login'
+				} else {
+					setError(res.data)
+				}
+			})
 	}
 
 	return (

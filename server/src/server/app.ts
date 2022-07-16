@@ -108,7 +108,7 @@ app.use(session({ secret: 'secretcode', resave: true, saveUninitialized: true })
 app.use(cookieParser())
 app.use(passport.initialize())
 app.use(passport.session())
-// app.use(express.static(root))
+app.use(express.static(root))
 
 // Logs
 app.use(logRoute)
@@ -155,6 +155,15 @@ app.get('/infoCompressed', compression(), (req, res) => {
 	}
 	res.send(info)
 })
+
+
+// Rutas test
+app.post('/img',(req,res)=>{
+	const user:UserInterface = req.body.user
+	console.log(user)
+	res.send(user.avatar)
+})
+
 
 app.get('/*',logInvalid)
 
