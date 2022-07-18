@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { myContext } from '../Pages/Context'
 
 export default function NavBar() {
-	const ctx = useContext(myContext)[0] /* 0 = user */
+	const user = useContext(myContext)[0] /* 0 = user */
 	const cart = useContext(myContext)[1] /* 1 = cart */
 
 	const logout = () => {
@@ -17,13 +17,14 @@ export default function NavBar() {
 	return (
 		<div className='flex justify-around items-center p-8 border border-red-600'>
 			<Link to='/' className='border border-rose-500'>Home</Link>
-			{ctx ? (
+			{user ? (
 				<>
 					<Link to='/chat' className='border border-rose-500'>Chat</Link>
-					{ctx.isAdmin ? <Link to='/admin' className='border border-rose-500'>Admin</Link> : null}
+					{user.isAdmin ? <Link to='/admin' className='border border-rose-500'>Admin</Link> : null}
 					<Link onClick={logout} to='/logout' className='border border-rose-500'>
 						Logout
 					</Link>
+					<Link to='/user'><img className='rounded-full w-10' src={user.avatar} alt="" /></Link>
 				</>
 			) : (
 				<>

@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import axios, { AxiosResponse } from 'axios'
+import { storage } from '../firebase/firebase'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { v4 } from 'uuid'
 
 export default function Register() {
 	const [username, setUsername] = useState<string>('')
@@ -10,33 +13,35 @@ export default function Register() {
 	const [address, setAddress] = useState<string>('')
 	const [age, setAge] = useState<string>('')
 	const [phone, setPhone] = useState<string>('')
-	const [avatar, setAvatar] = useState<any>()
 
+	const [avatar, setAvatar] = useState<any>(null)
 
 	const [error, setError] = useState<string>('')
 
-	const register = () => {
-		const data = new FormData()
-		data.append('username',username)
-		data.append('password',password)
-		data.append('mail',mail)
-		data.append('firstName',firstName)
-		data.append('lastName',lastName)
-		data.append('address',address)
-		data.append('phone',phone)
-		data.append('age',age)
-		data.append('file',avatar)
+	const register = async () => {
+		if (avatar == null) return
+
+		const pathToSaveImages = 'images/'
+		const nameAvatar = `${avatar.name + v4()}`
+		const avatarRef = ref(storage, `${pathToSaveImages}${nameAvatar}`)
+
 		axios
 			.post(
 				'/register',
-				data,
+				{ username, password, mail, firstName, lastName, address, phone, age, avatar: pathToSaveImages + nameAvatar },
 				{
 					withCredentials: true,
 				}
 			)
-			.then((res: AxiosResponse) => {
+			.then(async (res: AxiosResponse) => {
 				if (res.data === 'success') {
-					window.location.href = '/login'
+					if (avatar.type !== ('image/jpg' || 'image/png')) {
+						await uploadBytes(avatarRef, avatar).then(async () => {
+							const urlAvatar = await getDownloadURL(avatarRef)
+							await axios.post('/user/avatar', { username, urlAvatar }, { withCredentials: true }).then((res)=>console.log(res.data))
+						})
+						window.location.href = '/login'
+					}
 				} else {
 					setError(res.data)
 				}
@@ -59,7 +64,7 @@ export default function Register() {
 				<button onClick={register} className='border border-orange-500 p-2'>
 					Register
 				</button>
-				{error ? <span>{error}</span>:null}
+				{error ? <span>{error}</span> : null}
 			</div>
 		</div>
 	)

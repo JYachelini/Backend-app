@@ -6,26 +6,12 @@ import bcrypt from 'bcryptjs'
 import { isAdministrator } from '../Middlewares/isAdministrator'
 import Mailer from '../Controllers/mail.controller'
 
-// File saving
-import multer from 'multer'
-
-const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, 'uploads')
-	},
-	filename: (req, file, cb) => {
-		cb(null, `${Date.now()}-${file.originalname}`)
-	},
-})
-const upload = multer({ storage: storage })
-
 const Mail = new Mailer()
 
 export const routerAuthentication = Router()
 
-routerAuthentication.route('/register').post(upload.single('file'), async (req, res) => {
-	const { file } = req
-	const { username, password, mail, firstName, lastName, address, age, phone } = req.body
+routerAuthentication.route('/register').post(async (req, res) => {
+	const { username, password, mail, firstName, lastName, address, age, phone, avatar } = req.body
 	const verifyUser: boolean =
 		!username ||
 		!password ||
@@ -75,7 +61,7 @@ routerAuthentication.route('/register').post(upload.single('file'), async (req, 
 						address,
 						age,
 						phone,
-						avatar: file?.path,
+						avatar,
 					})
 					await newUser.save().then(await Mail.newRegisterMail(req, res))
 				}
@@ -89,6 +75,16 @@ routerAuthentication.route('/login').post(passport.authenticate('local'), (req, 
 
 routerAuthentication.route('/user').get((req, res) => {
 	res.send(req.user)
+})
+routerAuthentication.route('/user/avatar').post(async (req, res) => {
+	const { username, urlAvatar } = req.body
+	await User.findOneAndUpdate({ username }, { avatar: urlAvatar })
+		.catch((err) => {
+			if (err) throw err
+		})
+		.then(() => {
+			res.send('success')
+		})
 })
 
 routerAuthentication.route('/logout').get((req, res, next) => {

@@ -8,6 +8,7 @@ import HomePage from './Pages/HomePage'
 import Login from './Pages/Login'
 import Register from './Pages/Register'
 import './App.css'
+import User from './Pages/User'
 
 function App() {
 	const ctx = useContext(myContext)[0] /* 0 = user */
@@ -20,6 +21,7 @@ function App() {
 					<>
 						{ctx.isAdmin ? <Route path='/admin' element={<AdminPage />}></Route> : null}
 						<Route path='/chat' element={<Chat />}></Route>
+						<Route path='/user' element={<User/>}></Route>
 					</>
 				) : (
 					<>
